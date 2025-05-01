@@ -15,9 +15,6 @@ class StoreFront extends Component
     {
         $products = Product::query()->get();
 
-        // Debug the price property of the first product
-        //dd($products->first()->price);
-
         // Create a formatter for Money objects
         $currencies = new ISOCurrencies();
         $numberFormatter = new \NumberFormatter('en_US',
