@@ -41,28 +41,30 @@
         </div>
 
         <!-- Variant Selector -->
-        <div class="space-y-4">
+        <div class="mt-4 space-y-4">
             <select
+                wire:model="variant"
                 class="block w-full rounded-md border py-1.5 pl-3
-                pr-10 text-gray-800 focus:ring focus:ring-blue-500"
-            >
-                <option disabled selected>Select a variant</option>
+                pr-10 text-gray-800 focus:ring focus:ring-blue-500">
+{{--                <option disabled selected>Select a variant</option>--}}
                 @foreach($this->product->variants as $variant)
                     <option value="{{ $variant->id }}">
                         {{ $variant->size }} / {{ $variant->color }}
                     </option>
                 @endforeach
             </select>
+
+            @error('variant')
+                <div class="mt-2 text-red-600">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
 
         <!-- Add to Cart Button -->
-        <div class="mt-4">
-            <button
-                type="button"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow-md"
-            >
-                Add to Cart
-            </button>
+        <div class="mt-4 space-y-4">
+            <x-button wire:click="addToCart">Add to cart</x-button>
         </div>
     </div>
+
 </div>
