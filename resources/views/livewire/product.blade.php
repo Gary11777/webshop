@@ -46,7 +46,6 @@
                 wire:model="variant"
                 class="block w-full rounded-md border py-1.5 pl-3
                 pr-10 text-gray-800 focus:ring focus:ring-blue-500">
-{{--                <option disabled selected>Select a variant</option>--}}
                 @foreach($this->product->variants as $variant)
                     <option value="{{ $variant->id }}">
                         {{ $variant->size }} / {{ $variant->color }}

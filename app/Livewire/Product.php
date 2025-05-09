@@ -12,7 +12,7 @@ class Product extends Component
     public $variant;
 
     public $rules = [
-        'variant' => ['required', 'exists:App\Models\ProductVariant,id'],
+        'variant' => ['required', 'exists:App\Models\ProductVariant,id']
     ];
 
     public function mount()
@@ -24,7 +24,9 @@ class Product extends Component
     {
         $this->validate();
 
-        $cart->add();
+        $cart->add(
+            variantId: $this->variant,
+        );
     }
     public function getProductProperty()
     {

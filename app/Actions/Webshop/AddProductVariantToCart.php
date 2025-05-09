@@ -2,10 +2,25 @@
 
 namespace App\Actions\Webshop;
 
+use App\Models\Cart;
+
 class AddProductVariantToCart
 {
-    public function add()
+    public function add($variantId)
     {
-        dd('AddProductVariantToCart');
+        if(auth()->guest())
+        {
+            $cart = Cart::firstOrCreate([
+                'session_id' => session()->getId(),
+            ]);
+        }
+
+        if(auth()->user())
+        {
+            $cart = auth()->user()->cart ?: auth()->user()->cart()->create();
+
+        }
+
+        dd($cart);
     }
 }
