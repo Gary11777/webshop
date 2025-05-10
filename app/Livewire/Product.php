@@ -3,10 +3,12 @@
 namespace App\Livewire;
 
 use App\Actions\Webshop\AddProductVariantToCart;
+use App\Traits\InteractsWithBanner;
 use Livewire\Component;
 
 class Product extends Component
 {
+    use InteractsWithBanner;
     public $productId;
 
     public $variant;
@@ -27,6 +29,8 @@ class Product extends Component
         $cart->add(
             variantId: $this->variant,
         );
+
+        $this->banner('Product added to cart', 'success');
     }
     public function getProductProperty()
     {
