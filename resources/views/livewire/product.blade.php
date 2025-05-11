@@ -59,7 +59,7 @@
                 </div>
             @enderror
 
-            <!-- Global Banner -->
+            <!-- Banner -->
             @if (session('banner'))
                 <x-banner>
                     {{ session('banner.message') }}
