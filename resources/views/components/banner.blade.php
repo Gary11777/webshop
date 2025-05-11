@@ -4,6 +4,6 @@
     x-show="show"
     class="alert transition ease-in-out
     duration-500 p-4 rounded text-white
-    bg-green-500">
+    bg-green-700">
     {{ $slot }}
 </div>

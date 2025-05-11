@@ -27,6 +27,9 @@
                                   wire:navigate>
                     {{ __('Home') }}
                 </flux:navbar.item>
+
+                @livewire('navigation-cart')
+
             </flux:navbar>
 
             <flux:spacer />
