@@ -3,6 +3,7 @@
     <head>
         @include('partials.head')
         @livewireStyles
+        @livewireScripts
     </head>
     <body class="min-h-screen bg-zinc-50 dark:bg-zinc-800">
     <flux:header container class="border-b border-zinc-200 bg-white
@@ -13,7 +14,6 @@
                 {{ session('banner.message') }}
             </x-banner>
         @endif--}}
-
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <a href="{{ route('home') }}" class="ms-2 me-5 flex items-center
