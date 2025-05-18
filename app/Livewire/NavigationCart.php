@@ -7,9 +7,9 @@ use Livewire\Component;
 
 class NavigationCart extends Component
 {
-   public $listeners = [
+   /*public $listeners = [
        'productAddedToCart' => '$refresh',
-   ];
+   ];*/
 
     public function getCountProperty()
     {

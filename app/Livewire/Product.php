@@ -33,7 +33,7 @@ class Product extends Component
         $this->banner('Product added to cart', 'success');
 
         //dd(method_exists($this, 'emit'));
-        $this->emit('productAddedToCart');
+//        $this->emit('productAddedToCart');
     }
     public function getProductProperty()
     {
