@@ -18,6 +18,19 @@ class Cart extends Component
 
 //        $this->emit('productRemovedFromCart');
     }
+
+    public function increment($itemId)
+    {
+        CartFactory::make()->items()->where('id', $itemId)->first()->increment('quantity');
+    }
+
+    public function decrement($itemId)
+    {
+        $item = CartFactory::make()->items()->where('id', $itemId)->first();
+        if ($item->quantity > 1) {
+            $item->decrement('quantity');
+        }
+    }
     public function render()
     {
         return view('livewire.cart');
