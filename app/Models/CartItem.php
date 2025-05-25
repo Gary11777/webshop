@@ -17,9 +17,9 @@ class CartItem extends Model
         return $this->hasOneThrough(
             Product::class,
             ProductVariant::class,
-            'product_id',
             'id',
             'id',
+            'product_variant_id',
             'product_id',
         );
     }
