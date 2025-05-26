@@ -7,6 +7,12 @@
                     <th class="text-left py-3 px-4 uppercase text-sm font-semibold text-gray-600">
                         Product
                     </th>
+                    <th class="text-center py-3 px-4 uppercase text-sm font-semibold text-gray-600">
+                        Color
+                    </th>
+                    <th class="text-center py-3 px-4 uppercase text-sm font-semibold text-gray-600">
+                        Size
+                    </th>
                     <th class="text-right py-3 px-4 uppercase text-sm font-semibold text-gray-600">
                         Quantity
                     </th>
@@ -18,11 +24,13 @@
                         <td class="py-4 px-4">
                             <div class="flex flex-col gap-1">
                                 <span class="font-medium text-gray-800">{{ optional($item->product)->name ?? 'N/A' }}</span>
-                                <div class="text-sm text-gray-600">
-                                    <span class="mr-2">Size: {{ $item->variant->size }}</span>
-                                    <span>Color: {{ $item->variant->color }}</span>
-                                </div>
                             </div>
+                        </td>
+                        <td class="text-center py-4 px-4">
+                            {{ $item->variant->color ?? 'N/A' }}
+                        </td>
+                        <td class="text-center py-4 px-4">
+                            {{ $item->variant->size ?? 'N/A' }}
                         </td>
                         <td class="py-4 px-4 flex justify-end gap-4 items-center">
                             <button
@@ -60,5 +68,23 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-lg p-6 mt-12 w-[70%] mx-auto">
+        @guest
+            <x-auth-guest-message />
+        @endguest
+        @auth
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-800 font-semibold text-lg">Total:</span>
+                    <span class="text-gray-800 font-bold text-xl">$ {{ $this->total ??
+             'N\A' }}</span>
+                </div>
+                <div class="mt-4">
+                    <x-button wire:click="checkout" class="bg-blue-600
+                    text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-200">
+                        Checkout
+                    </x-button>
+                </div>
+        @endauth
     </div>
 </div>

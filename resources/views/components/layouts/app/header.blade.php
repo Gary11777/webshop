@@ -56,6 +56,14 @@
                         label="Documentation"
                     />
                 </flux:tooltip>
+                @guest
+                    <flux:navbar.item
+                        icon="user-circle"
+                        :href="route('login')"
+                        :label="__('Log In')"
+                        class="!h-10 [&>div>svg]:size-5"
+                    />
+                @endguest
             </flux:navbar>
 
             @auth
