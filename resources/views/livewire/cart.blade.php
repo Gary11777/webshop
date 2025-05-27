@@ -1,11 +1,15 @@
 <div class="max-w-4xl mx-auto">
-    <div class="bg-white rounded-lg shadow-lg p-6 mt-12 w-[70%] mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-6 mt-12 w-full mx-auto">
         <div class="overflow-x-auto">
             <table class="w-full table-fixed">
-                <thead class="bg-gray-50">
+                <thead class="bg-gray-100">
                 <tr>
                     <th class="text-left py-3 px-4 uppercase text-sm font-semibold text-gray-600">
                         Product
+                    </th>
+                    <th class="text-center py-3 px-4 uppercase text-sm
+                    font-semibold text-gray-600">
+                        Price
                     </th>
                     <th class="text-center py-3 px-4 uppercase text-sm font-semibold text-gray-600">
                         Color
@@ -16,6 +20,13 @@
                     <th class="text-right py-3 px-4 uppercase text-sm font-semibold text-gray-600">
                         Quantity
                     </th>
+                    <th class="text-right py-3 px-4 uppercase text-sm font-semibold text-gray-600">
+                        Subtotal
+                    </th>
+                    <th class="text-right py-3 px-4 uppercase text-sm
+                    font-semibold text-gray-600">
+                        &nbsp;
+                    </th>
                 </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -23,8 +34,12 @@
                     <tr class="hover:bg-gray-50 transition-colors duration-200">
                         <td class="py-4 px-4">
                             <div class="flex flex-col gap-1">
-                                <span class="font-medium text-gray-800">{{ optional($item->product)->name ?? 'N/A' }}</span>
+                                <span
+                                    class="font-medium text-gray-800">{{ optional($item->product)->name ?? 'N/A' }}</span>
                             </div>
+                        </td>
+                        <td class="text-center py-4 px-4">
+                            {{ $item->product->price ?? 'N/A' }}
                         </td>
                         <td class="text-center py-4 px-4">
                             {{ $item->variant->color ?? 'N/A' }}
@@ -35,25 +50,39 @@
                         <td class="py-4 px-4 flex justify-end gap-4 items-center">
                             <button
                                 wire:click="decrement({{ $item->id }})"
-                                class="p-1 hover:bg-gray-300 hover:cursor-pointer rounded-full
+                                class="p-1 bg-gray-100 hover:bg-gray-300
+                                hover:cursor-pointer rounded-full
                                         transition-colors duration-200"
                                 @disabled($item->quantity === 1)>
                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                                     fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor"
+                                     class="size-3">
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round" d="M5 12h14"/>
                                 </svg>
                             </button>
-                            <span class="text-gray-700">{{ $item->quantity }}</span>
+                            <span
+                                class="text-gray-700">{{ $item->quantity }}</span>
                             <button
                                 wire:click="increment({{ $item->id }})"
-                                class="p-1 hover:bg-gray-300 hover:cursor-pointer rounded-full
+                                class="p-1 bg-gray-100 hover:bg-gray-300
+                                hover:cursor-pointer rounded-full
                             transition-colors duration-200">
                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                     fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor"
+                                     class="size-3">
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="M12 4.5v15m7.5-7.5h-15"/>
                                 </svg>
                             </button>
-
+                        </td>
+                        <td class="text-center py-4 px-4">
+                            {{ $item->subtotal ?? 'N/A' }}
+                        </td>
+                        <td class="text-center py-4 px-4">
                             <button wire:click="delete({{ $item->id }})"
                                     class="p-1 hover:bg-red-50 hover:cursor-pointer rounded-full
                                     transition-colors duration-200"
@@ -69,7 +98,7 @@
             </table>
         </div>
     </div>
-    <div class="bg-white rounded-lg shadow-lg p-6 mt-12 w-[70%] mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-6 mt-12 w-full mx-auto">
         @guest
             <x-auth-guest-message />
         @endguest
