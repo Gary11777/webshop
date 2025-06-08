@@ -98,15 +98,22 @@
             </table>
         </div>
     </div>
-    <div class="bg-white rounded-lg shadow-lg p-6 mt-12 w-full mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-6 mt-12 w-1/2">
         @guest
+            <div class="flex justify-between items-center">
+                <span class="text-gray-800 font-semibold text-lg">Total:</span>
+                <span class="text-gray-800 font-bold text-xl">{{
+                    $this->cart->total ?? 'N\A' }}</span>
+            </div>
+        <div class="mt-4">
             <x-auth-guest-message />
+        </div>
         @endguest
         @auth
                 <div class="flex justify-between items-center">
                     <span class="text-gray-800 font-semibold text-lg">Total:</span>
-                    <span class="text-gray-800 font-bold text-xl">$ {{ $this->total ??
-             'N\A' }}</span>
+                    <span class="text-gray-800 font-bold text-xl">{{
+                    $this->cart->total ?? 'N\A' }}</span>
                 </div>
                 <div class="mt-4">
                     <x-button wire:click="checkout" class="bg-blue-600
