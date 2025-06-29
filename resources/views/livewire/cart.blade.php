@@ -117,7 +117,8 @@
                 </div>
                 <div class="mt-4">
                     <x-button wire:click="checkout" class="bg-blue-600
-                    text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-200">
+                    text-white px-4 py-2 rounded hover:bg-blue-700
+                    transition-colors duration-200 cursor-pointer">
                         Checkout
                     </x-button>
                 </div>
