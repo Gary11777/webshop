@@ -2,6 +2,7 @@
 
 namespace App\Actions\Webshop;
 
+use App\Models\Cart;
 use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,7 @@ class HandleCheckoutSessionCompleted
         DB::transaction(function () use ($sessionId) {
             $session = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
             $user = User::find($session->metadata->user_id);
+            $cart = Cart::find($session->metadata->cart_id);
 
             $order = $user->orders()->create([
                 'stripe_checkout_session_id' => $session->id,
@@ -65,6 +67,9 @@ class HandleCheckoutSessionCompleted
             });
 
             $order->items()->saveMany($orderItems);
+
+            $cart->items()->delete();
+            $cart->delete();
         });
     }
 }
