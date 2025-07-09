@@ -15,12 +15,17 @@ class CreateStripeCheckoutSession
             ->checkout(
             $this->formatCartItems($cart->items),
                 [
-                    'customer_update' => [ 'shipping' => 'auto' ],
+                    'customer_update' => [
+                        'shipping' => 'auto'
+                    ],
                     'shipping_address_collection' => [
-                        'allowed_countries' => [ 'US', 'LT', 'LV', 'PL' ],
+                        'allowed_countries' => [
+                            'US', 'LT', 'LV', 'PL'
+                        ]
                     ],
                     'metadata' => [
                         'user_id' => $cart->user->id,
+                        'cart_id' => $cart->id,
                     ],
                 ]
         );
