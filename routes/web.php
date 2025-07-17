@@ -10,6 +10,7 @@ Route::get('/product/{productId}', \App\Livewire\Product::class)
     ->name('product');
 Route::get('/cart', \App\Livewire\Cart::class)
     ->name('cart');
+Route::get('/checkout-status', \App\Livewire\CheckoutStatus::class)->name('webshop.checkout-status');
 
 /*Route::get('/', function () {
     return view('welcome');
