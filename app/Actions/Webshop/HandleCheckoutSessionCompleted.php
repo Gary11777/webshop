@@ -3,6 +3,7 @@
 namespace App\Actions\Webshop;
 
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +14,13 @@ class HandleCheckoutSessionCompleted
 {
     public function handle($sessionId)
     {
-        DB::transaction(function () use ($sessionId) {
+        // Check if order already exists to prevent duplicate processing
+        $existingOrder = Order::where('stripe_checkout_session_id', $sessionId)->first();
+        if ($existingOrder) {
+            return $existingOrder;
+        }
+
+        return DB::transaction(function () use ($sessionId) {
             $session = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
             $user = User::find($session->metadata->user_id);
             $cart = Cart::find($session->metadata->cart_id);
