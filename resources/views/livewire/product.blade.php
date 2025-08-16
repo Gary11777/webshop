@@ -58,13 +58,6 @@
                     {{ $message }}
                 </div>
             @enderror
-
-            <!-- Banner -->
-            @if (session('banner'))
-                <x-banner>
-                    {{ session('banner.message') }}
-                </x-banner>
-            @endif
         </div>
 
         <!-- Add to Cart Button -->

@@ -30,8 +30,12 @@ class Product extends Component
             variantId: $this->variant,
         );
 
-        $this->banner('Product added to cart', 'success');
-
+        // Dispatch browser event for the notification banner
+        $this->dispatch('banner-message', 
+            message: 'Product added to cart', 
+            style: 'success'
+        );
+        
         $this->dispatch('productAddedToCart');
     }
     public function getProductProperty()
