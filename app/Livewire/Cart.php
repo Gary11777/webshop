@@ -27,12 +27,13 @@ class Cart extends Component
     {
         $this->cart->items()->where('id', $itemId)->delete();
 
-//        $this->emit('productRemovedFromCart');
+        $this->dispatch('productRemovedFromCart');
     }
 
     public function increment($itemId)
     {
         $this->cart->items()->where('id', $itemId)->first()->increment('quantity');
+        $this->dispatch('productAddedToCart');
     }
 
     public function decrement($itemId)
@@ -40,6 +41,7 @@ class Cart extends Component
         $item = $this->cart->items()->where('id', $itemId)->first();
         if ($item->quantity > 1) {
             $item->decrement('quantity');
+            $this->dispatch('productRemovedFromCart');
         }
     }
     public function render()
