@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Actions\Webshop\MigrateSessionCart;
-use App\Factories\CartFactory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -40,8 +38,6 @@ class AppServiceProvider extends ServiceProvider
             $user = User::where('email', $request->email)->first();
 
             if ($user && Hash::check($request->password, $user->password)) {
-                (new MigrateSessionCart)->migrate(CartFactory::make(),
-                    $user?->cart ?: $user->cart()->create());
                 return $user;
             }
         });
