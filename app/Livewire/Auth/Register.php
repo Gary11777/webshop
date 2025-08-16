@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Auth;
 
+use App\Actions\Webshop\MigrateSessionCart;
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +28,9 @@ class Register extends Component
      */
     public function register(): void
     {
+        // Store the current session ID before authentication
+        $previousSessionId = session()->getId();
+        
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
@@ -36,7 +41,12 @@ class Register extends Component
 
         event(new Registered(($user = User::create($validated))));
 
+        // Store the previous session ID before login
+        session()->put('previous_session_id', $previousSessionId);
+        
         Auth::login($user);
+        
+        // The cart migration will be handled by the MigrateCartOnLogin listener
 
         $this->redirect(route('dashboard', absolute: false), navigate: true);
     }

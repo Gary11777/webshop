@@ -8,9 +8,13 @@ class CartFactory
 {
     public static function make(): Cart
     {
-        return match(auth()->guest()) {
-            true => Cart::firstOrCreate(['session_id' => session()->getId()]),
-            false => auth()->user()->cart ?: auth()->user()->cart()->create()
-        };
+        if (auth()->guest()) {
+            $cart = Cart::firstOrCreate(['session_id' => session()->getId()]);
+            // Store the cart ID in session for later retrieval after login
+            session()->put('guest_cart_id', $cart->id);
+            return $cart;
+        } else {
+            return auth()->user()->cart ?: auth()->user()->cart()->create();
+        }
     }
 }
