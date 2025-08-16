@@ -1,5 +1,5 @@
 <div class="max-w-md mx-auto mt-10 p-6 rounded-lg shadow border text-center text-base font-medium">
-    @if($paymentStatus === 'completed' && $this->order)
+    @if($paymentStatus === 'completed' && $order)
         <div class="bg-green-50 border-green-300 text-green-800">
             <div class="flex items-center justify-center mb-3">
                 <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -7,9 +7,9 @@
                 </svg>
             </div>
             <h2 class="text-lg font-semibold mb-2">Payment Successful!</h2>
-            <p class="mb-4">Thank you for your order (#{{ $this->order->id }})</p>
+            <p class="mb-4">Thank you for your order (#{{ $order->id }})</p>
             <div class="text-sm text-green-700">
-                <p>Order Total: ${{ number_format($this->order->amount_total / 100, 2) }}</p>
+                <p>Order Total: ${{ number_format($order->amount_total / 100, 2) }}</p>
                 <p>You will receive a confirmation email shortly.</p>
             </div>
             <a href="{{ route('home') }}" class="inline-block mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
