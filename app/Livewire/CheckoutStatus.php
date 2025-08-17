@@ -30,18 +30,28 @@ class CheckoutStatus extends Component
     public function processSessionIfNeeded()
     {
         try {
-            // First check if order already exists
-            $existingOrder = auth()->user()->orders()
-                ->where('stripe_checkout_session_id', $this->sessionId)
-                ->first();
-
+            // First retrieve the session from Stripe
+            $session = Cashier::stripe()->checkout->sessions->retrieve($this->sessionId);
+            
+            // Check if order already exists (using session metadata or direct search)
+            $existingOrder = \App\Models\Order::where('stripe_checkout_session_id', $this->sessionId)->first();
+            
             if ($existingOrder) {
                 $this->paymentStatus = 'completed';
                 return;
             }
 
-            // If no order exists, verify the session with Stripe and process it
-            $session = Cashier::stripe()->checkout->sessions->retrieve($this->sessionId);
+            // If user is authenticated, also check their orders
+            if (auth()->check()) {
+                $userOrder = auth()->user()->orders()
+                    ->where('stripe_checkout_session_id', $this->sessionId)
+                    ->first();
+                    
+                if ($userOrder) {
+                    $this->paymentStatus = 'completed';
+                    return;
+                }
+            }
             
             if ($session->payment_status === 'paid') {
                 // Process the session immediately
@@ -55,9 +65,9 @@ class CheckoutStatus extends Component
                 $this->paymentStatus = 'processing';
             }
         } catch (\Exception $e) {
-            Log::error('Error processing checkout session: ' . $e->getMessage());
+            Log::error('Error processing checkout session: ' . $e->getMessage() . ' Stack: ' . $e->getTraceAsString());
             $this->paymentStatus = 'failed';
-            $this->errorMessage = 'Unable to verify payment status';
+            $this->errorMessage = 'Unable to verify payment status. Error: ' . $e->getMessage();
         }
     }
 
@@ -70,9 +80,17 @@ class CheckoutStatus extends Component
     public function getOrderProperty()
     {
         if ($this->paymentStatus === 'completed') {
-            return auth()->user()->orders()
-                ->where('stripe_checkout_session_id', $this->sessionId)
-                ->first();
+            // First try to get order directly
+            $order = \App\Models\Order::where('stripe_checkout_session_id', $this->sessionId)->first();
+            
+            // If user is authenticated and no order found, check user's orders
+            if (!$order && auth()->check()) {
+                $order = auth()->user()->orders()
+                    ->where('stripe_checkout_session_id', $this->sessionId)
+                    ->first();
+            }
+            
+            return $order;
         }
         return null;
     }
