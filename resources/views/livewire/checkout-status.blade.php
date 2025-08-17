@@ -9,7 +9,7 @@
             <h2 class="text-lg font-semibold mb-2">Payment Successful!</h2>
             <p class="mb-4">Thank you for your order (#{{ $this->order->id }})</p>
             <div class="text-sm text-green-700">
-                <p>Order Total: ${{ number_format($this->order->amount_total / 100, 2) }}</p>
+                <p>Order Total: {{ $this->order->amount_total }}</p>
                 <p>You will receive a confirmation email shortly.</p>
             </div>
             <a href="{{ route('home') }}" class="inline-block mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
