@@ -22,18 +22,30 @@ Route::get('/preview', function () {
 })->name('home');*/
 
 Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'throttle:120,1'])
     ->name('dashboard');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified', 'throttle:60,1', 'signed'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
-    Route::get('settings/profile', Profile::class)->name('settings.profile');
-    Route::get('settings/password', Password::class)->name('settings.password');
-    Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+    // Critical user settings - require password confirmation and stricter rate limiting
+    Route::middleware(['password.confirm', 'throttle:10,1'])->group(function () {
+        Route::get('settings/password', Password::class)->name('settings.password');
+    });
+    
+    // Standard user settings with moderate protection
+    Route::middleware(['throttle:30,1'])->group(function () {
+        Route::get('settings/profile', Profile::class)->name('settings.profile');
+        Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+    });
 
-    Route::get('/checkout-status', \App\Livewire\CheckoutStatus::class)->name('checkout-status');
-    Route::get('/order/{orderId}', \App\Livewire\ViewOrder::class)->name('view-order');
+    // Financial/order routes - maximum security for sensitive operations
+    Route::middleware(['throttle:20,1', 'signed'])->group(function () {
+        Route::get('/checkout-status', \App\Livewire\CheckoutStatus::class)->name('checkout-status');
+        Route::get('/order/{orderId}', \App\Livewire\ViewOrder::class)
+            ->name('view-order')
+            ->where('orderId', '[0-9]+');
+    });
 });
 
 require __DIR__.'/auth.php';
