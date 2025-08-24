@@ -25,7 +25,7 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified', 'throttle:120,1'])
     ->name('dashboard');
 
-Route::middleware(['auth', 'verified', 'throttle:60,1', 'signed'])->group(function () {
+Route::middleware(['auth', 'verified', 'throttle:60,1'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
     // Critical user settings - require password confirmation and stricter rate limiting
@@ -40,11 +40,13 @@ Route::middleware(['auth', 'verified', 'throttle:60,1', 'signed'])->group(functi
     });
 
     // Financial/order routes - maximum security for sensitive operations
-    Route::middleware(['throttle:20,1', 'signed'])->group(function () {
-        Route::get('/checkout-status', \App\Livewire\CheckoutStatus::class)->name('checkout-status');
+    Route::middleware(['throttle:20,1'])->group(function () {
+        Route::get('/checkout-status', \App\Livewire\CheckoutStatus::class)->name('webshop.checkout-status');
         Route::get('/order/{orderId}', \App\Livewire\ViewOrder::class)
             ->name('view-order')
             ->where('orderId', '[0-9]+');
+            Route::get('/my-orders', \App\Livewire\MyOrders::class)
+            ->name('my-orders');
     });
 });
 
