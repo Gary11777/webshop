@@ -1,5 +1,5 @@
 <div class="max-w-4xl mx-auto">
-    <div class="bg-white rounded-lg shadow-lg p-6 mt-12 w-full mx-auto">
+    <x-panel>
         <div class="overflow-x-auto">
             <table class="w-full table-fixed">
                 <thead class="bg-gray-100">
@@ -97,31 +97,42 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div class="bg-white rounded-lg shadow-lg p-6 mt-12 w-1/2">
-        @guest
-            <div class="flex justify-between items-center">
-                <span class="text-gray-800 font-semibold text-lg">Total:</span>
-                <span class="text-gray-800 font-bold text-xl">{{
-                    $this->cart->total ?? 'N\A' }}</span>
+    </x-panel>
+    <x-panel class="mt-6 w-full max-w-md ml-auto">
+        <div>
+            <!-- Order Summary Header -->
+            <h3 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 text-center">
+                Order Summary
+            </h3>
+            
+            <!-- Total Section -->
+            <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                <span class="text-gray-700 font-medium">Subtotal:</span>
+                <span class="text-gray-900 font-semibold">{{ $this->cart->total ?? 'N/A' }}</span>
             </div>
-        <div class="mt-4">
-            <x-auth-guest-message />
-        </div>
-        @endguest
-        @auth
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-800 font-semibold text-lg">Total:</span>
-                    <span class="text-gray-800 font-bold text-xl">{{
-                    $this->cart->total ?? 'N\A' }}</span>
+            
+            <div class="flex justify-between items-center py-3">
+                <span class="text-lg font-semibold text-gray-900">Total:</span>
+                <span class="text-xl font-bold text-gray-900">{{ $this->cart->total ?? 'N/A' }}</span>
+            </div>
+
+            @guest
+                <!-- Guest Message -->
+                <div class="mt-2 p-2 bg-blue-50 rounded-lg border border-blue-200">
+                    <x-auth-guest-message />
                 </div>
-                <div class="mt-4">
-                    <x-button wire:click="checkout" class="bg-blue-600
-                    text-white px-4 py-2 rounded hover:bg-blue-700
-                    transition-colors duration-200 cursor-pointer">
-                        Checkout
+            @endguest
+
+            @auth
+                <!-- Checkout Button -->
+                <div class="mt-2">
+                    <x-button 
+                        wire:click="checkout" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 text-center">
+                        Proceed to Checkout
                     </x-button>
                 </div>
-        @endauth
-    </div>
+            @endauth
+        </div>
+    </x-panel>
 </div>
