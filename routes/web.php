@@ -4,8 +4,8 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
-use App\Models\Order;
-use App\Mail\OrderConfirmation;
+use App\Models\Order;  
+use App\Mail\AbandonedCartReminder;
 
 Route::get('/', \App\Livewire\StoreFront::class)->name('home');
 Route::get('/product/{productId}', \App\Livewire\Product::class)
@@ -13,13 +13,11 @@ Route::get('/product/{productId}', \App\Livewire\Product::class)
 Route::get('/cart', \App\Livewire\Cart::class)
     ->name('cart');
 Route::get('/preview', function () {
-    $order = Order::first();
-    return new OrderConfirmation($order);
+    $user = auth()->user() ?? \App\Models\User::first();
+    $cart = $user->cart;
+    return (new AbandonedCartReminder($cart))->render();
 });
 
-/*Route::get('/', function () {
-    return view('welcome');
-})->name('home');*/
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified', 'throttle:120,1'])

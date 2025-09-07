@@ -14,14 +14,14 @@ class AbandonedCartReminder extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $cart;
+    // public $cart;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Cart $cart)
+    public function __construct(public Cart $cart)
     {
-        $this->cart = $cart;
+        // $this->cart = $cart;
     }
 
     /**
@@ -30,7 +30,7 @@ class AbandonedCartReminder extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Abandoned Cart Reminder',
+            subject: 'You still have items in your cart.',
         );
     }
 
@@ -40,7 +40,7 @@ class AbandonedCartReminder extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            markdown: 'emails.abandoned-cart-reminder',
         );
     }
 
