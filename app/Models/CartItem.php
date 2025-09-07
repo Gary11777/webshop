@@ -13,6 +13,8 @@ class CartItem extends Model
     /** @use HasFactory<\Database\Factories\CartItemFactory> */
     use HasFactory;
 
+    protected $touches = ['cart'];
+
     protected function subtotal(): Attribute
     {
         return Attribute::make(
@@ -22,6 +24,10 @@ class CartItem extends Model
         );
     }
 
+    public function cart(): BelongsTo
+    {
+        return $this->belongsTo(Cart::class);
+    }
     public function product(): HasOneThrough
     {
         return $this->hasOneThrough(
